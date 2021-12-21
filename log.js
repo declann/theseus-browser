@@ -158,10 +158,17 @@ function LogView(logHandle, nodesHandle) {
 		if ("this" in entry) {
 			addValueCell("this = ", entry.this);
 		}
+		if ("parents" in entry) {
+			addValueCell("parents = ", entry.parents);
+		}
+		if ("invocationId" in entry) {
+			addValueCell("invocationId = ", entry.invocationId);
+		}
 
-		// $row.append($("<td class='backtrace-link' />").append($("<a />").html("Backtrace &rarr;").click(function () {
-		// 	this._showBacktrace(entry.invocationId);
-		// }.bind(this))));
+		$row.append($("<td class='backtrace-link' />").append($("<a />").html("Backtrace &rarr;").click(function () {
+			this._showBacktrace(entry.invocationId);
+			console.trace();
+		}.bind(this))));
 
 		return $table;
 	}
