@@ -26,7 +26,7 @@ $(function () {
 		tracer_name: "fiddleTracer",
 		path: path,
 	});
-	evalWrapper(instrumentedSrc);
+	evalWrapper(instrumentedSrc + '\n//# sourceURL=my-foo.js');
 
 	var logHandle = LogHandle(fiddleTracer, { ids: [], eventNames: [], exceptions: true, logs: true });
 	var nodesHandle = NodesHandle(fiddleTracer);
