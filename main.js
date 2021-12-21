@@ -136,6 +136,14 @@ $(function () {
 					deadNodeMarks[node.id] = editor.markText(convertPosToCodeMirror(node.start), convertPosToCodeMirror(node.end), { className: "dead" });
 				}
 			}
+			
+			// old DN comments:
+			//if ((node.type) == "callsite") debugger; // works
+			if (['function','branch','callsite'].indexOf(node.type) == -1) debugger // doesnt stop i.e. function branch and callsite are all that exist
+
+						//if ((node.type) == "branch") debugger;
+						//inactive branch highlighting works!
+						//but active branch un-highlighting DOESNT work TODO
 		});
 	});
 	
