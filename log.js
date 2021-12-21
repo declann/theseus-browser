@@ -165,9 +165,9 @@ function LogView(logHandle, nodesHandle) {
 			addValueCell("invocationId = ", entry.invocationId);
 		}
 
-		$row.append($("<td class='backtrace-link' />").append($("<a />").html("Backtrace &rarr;").click(function () {
-			this._showBacktrace(entry.invocationId);
-			console.trace();
+		$row.append($("<td class='backtrace-link' />").append($("<a />").html("Backtrace(broke) &rarr;").click(function () {
+			this._showBacktrace(entry.invocationId); // DN this is broken
+			//console.trace(); DN this is meaningless
 		}.bind(this))));
 
 		return $table;
