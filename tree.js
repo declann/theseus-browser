@@ -30,6 +30,7 @@ function TreeView() {
 		clear: function () {
 			roots.forEach(function (item) {
 				item.remove();
+				$dom.empty();
 			});
 		},
 	};
