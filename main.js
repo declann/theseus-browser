@@ -11,18 +11,6 @@ var _glyphCycle = {
 };
 
 $(function () {
-	var out = document.getElementById('out');
-	var es = `
-	const hello = () => ("world");
-	`;
-	var es2 = `
-	
-	`;
-	var js = `
-	function hello() { return "world" };
-	`
-	out.value = fondue.instrument(es); // js works, es doesn't
-
 	// todo set source here, from some calculang output
 	var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 		lineNumbers: true,
@@ -40,6 +28,9 @@ $(function () {
 		path: path,
 	});
 	evalWrapper(instrumentedSrc + '\n//# sourceURL=my-foo.js');
+
+	var out = document.getElementById('out');
+	out.value = instrumentedSrc;
 
 	var logHandle = LogHandle(fiddleTracer, { ids: [], eventNames: [], exceptions: true, logs: true });
 	var nodesHandle = NodesHandle(fiddleTracer);
