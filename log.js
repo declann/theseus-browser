@@ -3,6 +3,8 @@
 /* jshint newcap: false */
 "use strict";
 
+var itemsByInvocationId
+var entriesByInvocationId
 /**
 returns a LogView
 logHandle: a LogHandle
@@ -18,7 +20,7 @@ function LogView(logHandle, nodesHandle) {
 		} else if (value.type === "null") {
 			return $("<span />").text("null");
 		} else if (value.type === "object") {
-			return objectInspectorView(value);
+			return objectInspectorView(value); // DN TODO why doesn't this work? Use it for returnValue and arguments?
 		// } else if (value.type === "function") {
 		// 	var $image = $("<img />").attr("src", ExtensionUtils.getModuleUrl(module, "images/arrow.png"));
 		// 	var $dom = $("<span />").toggleClass("objects-bad", true)
@@ -149,9 +151,12 @@ function LogView(logHandle, nodesHandle) {
 		for (var i = 0; i < entry.arguments.length; i++) {
 			var arg = entry.arguments[i];
 			addValueCell((arg.name || ("arguments[" + i + "]")) + " = ", arg.value);
+			// DN addValueCell((arg.name || ("arguments[" + i + "]")) + " = ", (arg.name == 't') ? (arg.value.ownProperties._isAMomentObject.value ? moment(arg.value.ownProperties._d.preview).utc().format('DD/MM/YYYY') : arg.value) : arg.value);
+
 		}
 		if ("returnValue" in entry) {
 			addValueCell("return value = ", entry.returnValue);
+			//addValueCell("return value = ", entry.returnValue.ownProperties != undefined ? (entry.returnValue.ownProperties._isAMomentObject.value ? moment(entry.returnValue.ownProperties._d.preview).format('DD/MM/YYYY') : entry.returnValue) : entry.returnValue);
 		} else if (entry.exception) {
 			addValueCell("exception = ", entry.exception, "exception");
 		}
@@ -178,7 +183,8 @@ function LogView(logHandle, nodesHandle) {
 	var treeView = TreeView();
 	treeView.$dom.appendTo($dom);
 
-	var itemsByInvocationId = {}; // invocationId -> item
+	itemsByInvocationId = {}; // invocationId -> item
+	entriesByInvocationId = {} // DN
 
 	function findParentItem(entry) {
 		if (!entry.parents) {
@@ -190,13 +196,17 @@ function LogView(logHandle, nodesHandle) {
 	}
 
 	logHandle.on("queryChanged", function () {
+		//debugger;
 		treeView.clear();
 		itemsByInvocationId = {};
+		entriesByInvocationId = {};
+		data.values = [];
 	});
 
 	logHandle.on("entries", function (entries) {
 		entries.forEach(function (entry) {
 			var itemView = itemsByInvocationId[entry.invocationId] = TreeItemView();
+			entriesByInvocationId[entry.invocationId] = entry;
 			itemView.$content.append(entryTable(entry));
 
 			var parentItem = findParentItem(entry);
@@ -205,7 +215,19 @@ function LogView(logHandle, nodesHandle) {
 			} else {
 				treeView.append(itemView);
 			}
-		});
+		});//nodesHandle.nodeWithId(entry.nodeId);
+
+		data.values = data.values.concat(entries.map((d) => ({
+			...d,
+			function: (nodesHandle.nodeWithId(d.nodeId).name == undefined) ? 'ANON' : nodesHandle.nodeWithId(d.nodeId).name,
+			value: (d.returnValue != undefined) ? d.returnValue.value : 0,
+			//...sr.extensions(d, nodesHandle.nodeWithId(d.nodeId)), <-- this pull channels or custom fields from an 'extensions' fn in calculang model, old dev, consider?
+			//parent: d.nodeId ? nodesHandle.nodeWithId(d.nodeId).name : 'n/a'
+			//parent: (findParentItem(d)) ? findParentItem(d).nodeId : "n/a"
+			parent:d.parents != undefined ? nodesHandle.nodeWithId(entriesByInvocationId[d.parents[0].invocationId].nodeId).name : 'no parent'
+
+			//entriesByInvocationId[d.invocationId].nodeId// (findParentItem(d)) ? findParentItem(d).nodeId : "n/a"
+		})))
 	});
 
 	var self = {

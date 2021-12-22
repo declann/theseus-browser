@@ -50,6 +50,8 @@ body, th, td {
 <button onclick="javascript:initVega()">vega</button>
 
 <script type="text/javascript">
+	var data = {values:[]};
+
 	function initVega() {
 		var spec = "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json";
 		vegaEmbed('#vis', spec).then(function(result) {
