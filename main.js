@@ -11,6 +11,7 @@ var _glyphCycle = {
 };
 
 $(function () {
+	// todo set source here, from some calculang output
 	var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 		lineNumbers: true,
 		gutters: ["pill-gutter"],

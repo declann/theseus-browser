@@ -9259,7 +9259,7 @@ module.exports={
 	"description" : "rewrites JavaScript code to collect partial execution traces",
 	"license" : "MIT",
 	"author" : "Tom Lieber <tom@alltom.com>",
-	"version" : "0.4.1",
+	"version" : "0.4.1", // DN notice, vs 0.7.0 from polo2ro fork
 	"main" : "./lib/fondue",
 	"repository" : {
 		"type" : "git",
