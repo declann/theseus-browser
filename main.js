@@ -15,10 +15,13 @@ $(function () {
 	var es = `
 	const hello = () => ("world");
 	`;
+	var es2 = `
+	
+	`;
 	var js = `
 	function hello() { return "world" };
 	`
-	out.value = fondue.instrument(js); // js works, es doesn't
+	out.value = fondue.instrument(es); // js works, es doesn't
 
 	// todo set source here, from some calculang output
 	var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
