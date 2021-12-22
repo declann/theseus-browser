@@ -82,6 +82,20 @@ $(function () {
 	exceptionItem.addToQuery = function (query) { query.exceptions = true; };
 	exceptionItem.removeFromQuery = function (query) { query.exceptions = false; };
 
+	var sortIndex = -2;
+	var logItems = [];
+	["subs", "subs_new", "subs_churned"].forEach(d => {
+		var logItem = QueryBarItem(d);
+		logItem.$dom.addClass("logs");
+		logItem.sortIndex = --sortIndex;
+		logItem.on("click", queryBarItemClicked);
+		logItem.setActive(logHandle.lastQuery[d]);
+		logItem.addToQuery = function (query) { query[d] = true; };
+		logItem.removeFromQuery = function (query) { query[d] = false; };
+		debugger;
+		logItems.push(logItem);
+	})
+
 	countConsoleLogsHandle.on("pending", function (count) { logItem.setCount(count); queryBar.enableItem(logItem); });
 	countExceptionsHandle.on("pending", function (count) { exceptionItem.setCount(count); queryBar.enableItem(exceptionItem); });
 	epochsHandle.on("epochs", function () { console.log("epochs", arguments); });
@@ -89,6 +103,10 @@ $(function () {
 	logHandle.on("queryChanged", function (newQuery) {
 		logItem.setActive(newQuery.logs);
 		exceptionItem.setActive(newQuery.exceptions);
+		logItems.forEach(d => {
+			d.setActive(newQuery[d.name]);
+			debugger;
+		})
 
 		for (var nodeId in pillsByNodeId) {
 			var pill = pillsByNodeId[nodeId];

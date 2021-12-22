@@ -80,6 +80,7 @@ function QueryBarItem(name, glyph) {
 			return active;
 		},
 		sortIndex: 0,
+		name: name
 	});
 
 	return self;
