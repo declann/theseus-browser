@@ -53,7 +53,15 @@ body, th, td {
 	var data = {values:[]};
 
 	function initVega() {
-		var spec = "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json";
+		var spec = {
+			data: data, // todo make a dataset?
+			mark: "text",
+			encoding: {
+				"x": { "field": "arguments[0].value.ownProperties.year_in.value"},
+				"y": { "field": "function"},
+				"text": { "field": "value"}
+			}
+		};
 		vegaEmbed('#vis', spec).then(function(result) {
 			// Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
 		}).catch(console.error);

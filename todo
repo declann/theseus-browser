@@ -1,4 +1,3 @@
-release fondue chgs
+extract inputs so that vega can use them (can it lookup [0]?)
 
-hook up a vega spec that uses data
-
+release fondue chgs (eg parents chgs)

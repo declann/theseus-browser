@@ -224,7 +224,8 @@ function LogView(logHandle, nodesHandle) {
 			//...sr.extensions(d, nodesHandle.nodeWithId(d.nodeId)), <-- this pull channels or custom fields from an 'extensions' fn in calculang model, old dev, consider?
 			//parent: d.nodeId ? nodesHandle.nodeWithId(d.nodeId).name : 'n/a'
 			//parent: (findParentItem(d)) ? findParentItem(d).nodeId : "n/a"
-			parent:d.parents != undefined ? nodesHandle.nodeWithId(entriesByInvocationId[d.parents[0].invocationId].nodeId).name : 'no parent'
+			parent: d.parents != undefined ? nodesHandle.nodeWithId(entriesByInvocationId[d.parents[0].invocationId].nodeId).name : 'no parent',
+			args2: d.arguments[0].value.ownProperties // not needed
 
 			//entriesByInvocationId[d.invocationId].nodeId// (findParentItem(d)) ? findParentItem(d).nodeId : "n/a"
 		})))
