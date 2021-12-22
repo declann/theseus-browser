@@ -30,7 +30,11 @@ $(function () {
 	evalWrapper(instrumentedSrc + '\n//# sourceURL=my-foo.js');
 
 	var out = document.getElementById('out');
-	out.value = instrumentedSrc;
+	out.value = fondue.instrument(src, {
+		tracer_name: "fiddleTracer",
+		path: path,
+		include_prefix: false
+	});
 
 	var logHandle = LogHandle(fiddleTracer, { ids: [], eventNames: [], exceptions: true, logs: true });
 	var nodesHandle = NodesHandle(fiddleTracer);
