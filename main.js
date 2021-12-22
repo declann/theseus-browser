@@ -11,6 +11,15 @@ var _glyphCycle = {
 };
 
 $(function () {
+	var out = document.getElementById('out');
+	var es = `
+	const hello = () => ("world");
+	`;
+	var js = `
+	function hello() { return "world" };
+	`
+	out.value = fondue.instrument(js); // js works, es doesn't
+
 	// todo set source here, from some calculang output
 	var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 		lineNumbers: true,
