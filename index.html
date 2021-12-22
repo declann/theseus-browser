@@ -65,7 +65,9 @@ function fib(n) {
 }
 fib(5);
 
-const hello = () => ("world");
+const hello = () => ("world"); // yes it gets some instrumentation, via traceFunCreate, not traceEnter as in hello1 and no node created
+
+var eg = hello(function () { });
 
 // this doesn work (needs esprima-selector chg for ObjectPattern: const helloAgain = ({hello, world}) => (hello + " " + world);
 
